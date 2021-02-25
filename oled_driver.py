@@ -7,9 +7,9 @@ import os
 import time
 
 display_width = [12, 16, 18]
-layouts = [{0: BigLine(0, 8, font='FreeSans.ttf', size=20)},
-           {0: BigLine(0, 1, font='FreeSans.ttf', size=14), 1: BigLine(0, 17, font='FreeSans.ttf', size=14)},
-           {0: SmallLine(0, 0, font='FreeSans.ttf', size=10), 1: SmallLine(0, 11, font='FreeSans.ttf', size=10), 2: SmallLine(0, 22, font='FreeSans.ttf', size=10)}
+layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=20)},
+           {0: BigLine(0, 1, font='DejaVuSans.ttf', size=14), 1: BigLine(0, 17, font='DejaVuSans.ttf', size=14)},
+           {0: SmallLine(0, 0, font='DejaVuSans.ttf', size=10), 1: SmallLine(0, 11, font='DejaVuSans.ttf', size=10), 2: SmallLine(0, 22, font='DejaVuSans.ttf', size=10)}
            ]
 WIDTH = 18
 HEIGHT = 3
