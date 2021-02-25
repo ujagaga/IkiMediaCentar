@@ -30,14 +30,11 @@ Sledece kreiraj folder:
   /home/ivana/.mpd/
   /home/ivana/.mpd/tag_cache
 
-- Za web interface treba kopirati ympd sa: https://ympd.org/
-  On se samo pokrene i nakaci na port 8080. Najbolje ga je staviti kao cron task:
-    pokreni:contab -e
-    pa dodati: "@reboot <putanja_do_ympd>"
-
-  Ako zelis da servira na portu 80 da ne kucas i port, stavi ga u crontab za root-a kao:
-    sudo crontab -e
-    @reboot /home/ivana/Apps/ympd -w 80
+- Za web interface treba instalirati mympd: sudo apt install mympd
+  Nakon toga pokrenuti: mympd-config
+  Automatski ce pokupiti podesavanja iz mpd-a, pa ga onda samo pokreni kao sudo mympd. On se nakaci na port 80. Najbolje ga je staviti kao cron task:
+    pokreni:sudo contab -e
+    pa dodati: "@reboot mympd"
 
 - Takodje je upotrebljiv Android klijent MPDroid.
 
@@ -63,12 +60,13 @@ Sledece kreiraj folder:
   Napisao sam Python skript koji sluzi za drajver tog displeja. Samo treba u /tmp/display ubaciti tekst koji da prikaze.
   Pokrece se na startu.
 
-- Ako zelis da pratis temperaturu, uloguj se preko ssh:
+- Ako zelis da pratis temperaturu procesora, uloguj se preko ssh:
  1. Otvori terminal
  2. ssh ivana@192.168.x.x 
  3. Lozinka: ivana1234
  4. Pokreni: armbianmonitor -m
 
-
+- Za vremensku prognozu koristim moj skript: weather.py
+  Na pocetku skripta su njegovi detalji, pa ga za vise informacija otvori i pogledaj kod. Dosta je jednostavan.
  
 

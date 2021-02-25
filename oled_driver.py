@@ -6,12 +6,12 @@ from oled_text import OledText, Layout32, BigLine, SmallLine
 import os
 import time
 
-display_width = [12, 16, 18]
-layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=20)},
-           {0: BigLine(0, 1, font='DejaVuSans.ttf', size=14), 1: BigLine(0, 17, font='DejaVuSans.ttf', size=14)},
-           {0: SmallLine(0, 0, font='DejaVuSans.ttf', size=10), 1: SmallLine(0, 11, font='DejaVuSans.ttf', size=10), 2: SmallLine(0, 22, font='DejaVuSans.ttf', size=10)}
+display_width = [13, 13, 21]
+layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=15)},
+           {0: BigLine(0, 0, font='DejaVuSans.ttf', size=15), 1: BigLine(0, 16, font='DejaVuSans.ttf', size=15)},
+           {0: SmallLine(0, 0, font='DejaVuSans.ttf', size=9), 1: SmallLine(0, 11, font='DejaVuSans.ttf', size=9), 2: SmallLine(0, 22, font='DejaVuSans.ttf', size=9)}
            ]
-WIDTH = 18
+WIDTH = 17
 HEIGHT = 3
 logFile = "/tmp/display"
 i2c = busio.I2C(SCL, SDA)
@@ -94,5 +94,5 @@ except KeyboardInterrupt:
     pass
 finally:
     oled.layout = layouts[0]
-    oled.text("------------", row)
+    oled.text("-----------", 0)
 
