@@ -13,6 +13,7 @@ IkiMedia beleske
 - Automatsko mount-ovanje USB-a je organizovano uz pomoc usbmount programa. Instalirao sam ga prateci link:
 https://www.linuxuprising.com/2019/04/automatically-mount-usb-drives-on.html
 Ono sto treba zapamtiti jeste da mora da se bilduje sa git repozitorijuma kako bi se dobila najnovija verzija sa ispravkama.
+Kada se ubode USB FLASH, on se automatski "mountuje" na forlder "/media/usb0". Napravio sam unutar njega folder "playlists" i tu ubacio playlistu sa radio stanicama. Nakon sto ukljucis USB FLASH, taj sadrzaj se privremeno "pregazi" sadrzajem FLASH-a, tako da je dostupan samo kad nema flash-a i sluzi da bi mogao radio da svira i bez njega.
 
 - Za ripovanje audio CD-a je instaliran program "abcde". Konfigurisao sam ga da koristo "MP3/lame codec" sa kvalitetom "CBR/320bps". Konfiguracioni fajl je "/home/ivana/.abcde.conf". Vise informacija mozes da nadjes na:
 https://linuxconfig.org/how-to-rip-cds-from-the-linux-command-line
@@ -62,7 +63,11 @@ Sledece kreiraj folder:
   Napisao sam Python skript koji sluzi za drajver tog displeja. Samo treba u /tmp/display ubaciti tekst koji da prikaze.
   Pokrece se na startu.
 
-
+- Ako zelis da pratis temperaturu, uloguj se preko ssh:
+ 1. Otvori terminal
+ 2. ssh ivana@192.168.x.x 
+ 3. Lozinka: ivana1234
+ 4. Pokreni: armbianmonitor -m
 
 
  
