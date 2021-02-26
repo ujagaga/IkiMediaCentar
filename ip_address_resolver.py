@@ -2,6 +2,7 @@
 
 import socket
 import time
+import os
 
 LastIP = ""
 logFile = "/tmp/display"
@@ -21,11 +22,14 @@ def get_ip():
 
 
 while True:
-    ipAddr = get_ip()
-    if ipAddr != LastIP:
-        LastIP = ipAddr
-        file = open(logFile, 'w')
-        file.write(LastIP)
-        file.close()
+    if os.path.isfile(logFile):
+        # Only do this if the display is initialized. Otherwise we may be going for a shutdown.
+        ipAddr = get_ip()
+        if ipAddr != LastIP:
+            LastIP = ipAddr
+
+            file = open(logFile, 'w')
+            file.write(LastIP)
+            file.close()
 
     time.sleep(5)

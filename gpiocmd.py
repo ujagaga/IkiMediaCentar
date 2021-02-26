@@ -9,6 +9,7 @@ pip3 install OrangePi.GPIO
 import OPi.GPIO as GPIO
 import time
 import subprocess
+import os
 
 BTN_NEXT = 22
 BTN_PREV = 8
@@ -24,7 +25,7 @@ get_current_timestamp = 0
 def run_process(command_list):
     result = subprocess.run(command_list, stdout=subprocess.PIPE)
     #print("Running: {}".format(command_list))
-    return str(result.stdout, 'utf-8')
+    return [str(result.stdout, 'utf-8'), result.returncode]
 
 
 def setup():
@@ -48,7 +49,7 @@ def get_current():
     current = 0
     total = 1
     cmd = ['mpc']
-    status = run_process(cmd).split('\n')
+    status = run_process(cmd)[0].split('\n')
 
     try:
         play_active = False
@@ -72,7 +73,15 @@ def next_station():
         current = 1
 
     cmd = ['mpc', 'play', str(current)]
-    run_process(cmd)
+    result = run_process(cmd)[1]
+    
+    if result != 0:
+        # Try one more time
+        current += 1
+        if current > total:
+            current = 1
+        cmd = ['mpc', 'play', str(current)]
+        run_process(cmd)
 
 
 def previous_station():
@@ -82,7 +91,15 @@ def previous_station():
         current = total
 
     cmd = ['mpc', 'play', str(current)]
-    run_process(cmd)
+    result = run_process(cmd)[1]
+    
+    if result != 0:
+        # Try one more time
+        current -= 1
+        if current < 1:
+            current = total
+        cmd = ['mpc', 'play', str(current)]
+        run_process(cmd)
 
 
 def stop_mpc():
@@ -161,10 +178,18 @@ try:
             while not GPIO.input(BTN_PAUSE):
                 time.sleep(0.1)
                 if time.time() - btn_timestamp > 3:
-                    # Long press.Shutdown.
-                    cmd = ['poweroff']
+                    # Long press.Shutdown. Remove the display file so the LCD will go blank.
+                    try:
+                        os.remove("/tmp/display")
+                        time.sleep(3.5)
+                    except:
+                        pass
+                    GPIO.output(LED_PIN, 0) 
+
+                    cmd = ['/usr/sbin/poweroff']
                     run_process(cmd)
                     exit(0)
+
 
             # Short press
             tgl_mpc()

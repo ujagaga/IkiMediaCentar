@@ -5,6 +5,7 @@ import busio
 from oled_text import OledText, Layout32, BigLine, SmallLine
 import os
 import time
+import sys
 
 display_width = [13, 13, 21]
 layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=15)},
@@ -13,7 +14,7 @@ layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=15)},
            ]
 WIDTH = 17
 HEIGHT = 3
-logFile = "/tmp/display"
+inputFile = "/tmp/display"
 i2c = busio.I2C(SCL, SDA)
 # Create the display, pass its pixel dimensions
 oled = OledText(i2c, 128, 32)
@@ -39,7 +40,7 @@ def parse_data():
 
     data = []
     # Populate rows to display
-    file = open(logFile, "r")
+    file = open(inputFile, "r")
     lines = file.readlines()
     for line in lines:
         text_data = line.strip().replace('\n', '')
@@ -67,12 +68,20 @@ def populate_data():
 
 
 try:
+    # At startup create the display file so other apps can write to it
+    file = open(inputFile, "w")
+    file.write("Hello   \U0001F603")
+    file.close()
+
+    # Let everyone else use it too
+    os.chmod(inputFile, 0o777)
+
     while True:
-        time.sleep(2)
+        time.sleep(1)
         data = []
 
         # Populate rows to display
-        if os.path.exists(logFile):
+        if os.path.exists(inputFile):
             populate_data()
             row_count = len(data)
 
@@ -89,10 +98,17 @@ try:
             if (current_row >= row_count) or (row_count < 4):
                 current_row = 0
                 time.sleep(1)
+        else:
+            oled.layout = layouts[0]
+            oled.text("Bye   \U0001F634", 0)
+            time.sleep(1)
+            oled.text(" ", 0)
+            sys.exit()
+
 
 except KeyboardInterrupt:
     pass
 finally:
     oled.layout = layouts[0]
-    oled.text("-----------", 0)
+    oled.text(" ", 0)
 
