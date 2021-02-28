@@ -12,6 +12,8 @@ layouts = [{0: BigLine(0, 8, font='DejaVuSans.ttf', size=15)},
            {0: BigLine(0, 0, font='DejaVuSans.ttf', size=15), 1: BigLine(0, 16, font='DejaVuSans.ttf', size=15)},
            {0: SmallLine(0, 0, font='DejaVuSans.ttf', size=9), 1: SmallLine(0, 11, font='DejaVuSans.ttf', size=9), 2: SmallLine(0, 22, font='DejaVuSans.ttf', size=9)}
            ]
+
+large_layout = {0: BigLine(0, 0, font='DejaVuSans.ttf', size=30)}
 WIDTH = 17
 HEIGHT = 3
 inputFile = "/tmp/display"
@@ -76,6 +78,10 @@ try:
     # Let everyone else use it too
     os.chmod(inputFile, 0o777)
 
+    oled.layout = large_layout
+    oled.text("   \U0001F603", 0)
+    time.sleep(3)
+
     while True:
         time.sleep(1)
         data = []
@@ -100,10 +106,7 @@ try:
                 time.sleep(1)
         else:
             oled.layout = layouts[0]
-            oled.text("Bye   \U0001F634", 0)
-            time.sleep(1)
             oled.text(" ", 0)
-            sys.exit()
 
 
 except KeyboardInterrupt:

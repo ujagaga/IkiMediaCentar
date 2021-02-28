@@ -2,7 +2,7 @@
 
 The script uses xdotool to control volume, mpd and mpc to play a stream and python Flask to display the web interface. Install them all.
 
-    sudo apt install mpd mpc xdotool python3-pip
+    sudo apt install mpd mpc python3-pip
     pip3 install flask
 
 

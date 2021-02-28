@@ -11,6 +11,7 @@ import time
 import subprocess
 import os
 
+DISPLAY_FILE = "/tmp/display"
 BTN_NEXT = 22
 BTN_PREV = 8
 BTN_PAUSE = 18
@@ -174,34 +175,47 @@ try:
 
         elif not GPIO.input(BTN_PAUSE):
             btn_timestamp = time.time()
+            btn_action_flag = False
 
             while not GPIO.input(BTN_PAUSE):
                 time.sleep(0.1)
                 if time.time() - btn_timestamp > 3:
-                    # Long press.Shutdown. Remove the display file so the LCD will go blank.
-                    try:
-                        os.remove("/tmp/display")
-                        time.sleep(3.5)
-                    except:
-                        pass
-                    GPIO.output(LED_PIN, 0) 
+                    if not btn_action_flag:
+                        btn_action_flag = True
 
-                    cmd = ['/usr/sbin/poweroff']
-                    run_process(cmd)
-                    exit(0)
+                        # Long press.Power ON or Shutdown.
+                        if os.path.isfile(DISPLAY_FILE):
+                            # Remove the display file so the LCD will go blank.
+                            try:
+                                os.remove(DISPLAY_FILE)
+                                time.sleep(3.5)
+                            except:
+                                pass
+                            GPIO.output(LED_PIN, 0)
+                        else:
+                            # Create the file to enable display
+                            file = open(DISPLAY_FILE, 'w')
+                            file.write("        \U0001F603")
+                            file.close()
+                            # Let everyone else use it too
+                            os.chmod(DISPLAY_FILE, 0o777)
 
-
-            # Short press
-            tgl_mpc()
+            if not btn_action_flag:
+                # Short press
+                tgl_mpc()
 
         if play_active:
             if (time.time() - led_timestamp) > 2:
-                GPIO.output(LED_PIN, 0) 
+                GPIO.output(LED_PIN, 0)
                 led_timestamp = time.time();
             elif (time.time() - led_timestamp) > 1:
-                GPIO.output(LED_PIN, 1) 
+                GPIO.output(LED_PIN, 1)
         else:
-            GPIO.output(LED_PIN, 1) 
+            if os.path.isfile(DISPLAY_FILE):
+                GPIO.output(LED_PIN, 1)
+            else:
+                # No display file. Turn off the LED too.
+                GPIO.output(LED_PIN, 0)
 
         if (time.time() - get_current_timestamp) > 2:
             get_current()

@@ -12,15 +12,18 @@ IkiMedia beleske
 
 - Automatsko mount-ovanje USB-a je organizovano uz pomoc usbmount programa. Instalirao sam ga prateci link:
 https://www.linuxuprising.com/2019/04/automatically-mount-usb-drives-on.html
-Ono sto treba zapamtiti jeste da mora da se bilduje sa git repozitorijuma kako bi se dobila najnovija verzija sa ispravkama.
+Ono sto treba zapamtiti jeste da mora da se bilduje sa git repozitorijuma kako bi se dobila najnovija verzija sa ispravkama. Da bih smanjio posao za ubuduce, bildovao sam ga i kopirao u ovaj folder, tako da je sada dovoljno da se samo kopira i instalira usbmount_0.0.24_all.deb
+ 
 Kada se ubode USB FLASH, on se automatski "mountuje" na forlder "/media/usb0". Napravio sam unutar njega folder "playlists" i tu ubacio playlistu sa radio stanicama. Nakon sto ukljucis USB FLASH, taj sadrzaj se privremeno "pregazi" sadrzajem FLASH-a, tako da je dostupan samo kad nema flash-a i sluzi da bi mogao radio da svira i bez njega.
 
 - Za ripovanje audio CD-a je instaliran program "abcde". Konfigurisao sam ga da koristo "MP3/lame codec" sa kvalitetom "CBR/320bps". Konfiguracioni fajl je "/home/ivana/.abcde.conf". Vise informacija mozes da nadjes na:
 https://linuxconfig.org/how-to-rip-cds-from-the-linux-command-line
 
 - Instalacija "dependency" biblioteka: 
-    sudo apt install mpd mpc xdotool python3-pip
+    sudo apt install mpd mpc python3-pip git abcde mympd python3-smbus python3-dev i2c-tools python3-libgpiod
     pip3 install flask
+    sudo pip3 install flask oled-text OrangePi.GPIO
+    sudo pip3 install pillow==2.8.2
 
 Nakon instalacije treba kopirati mpd.conf u /etc/
 Zatim kreirati na USB flash-u direktorijume: 
@@ -30,11 +33,18 @@ Sledece kreiraj folder:
   /home/ivana/.mpd/
   /home/ivana/.mpd/tag_cache
 
-- Za web interface treba instalirati mympd: sudo apt install mympd
+- Za web interface treba instalirati mympd. Pratio sam link:
+   https://www.linuxlinks.com/mympd-standalone-lightweight-web-based-mpd-client/
+ 
+	git clone https://github.com/jcorporation/myMPD.git
+	cd myMPD
+	sudo ./build.sh installdeps
+	./build.sh release
+
   Nakon toga pokrenuti: mympd-config
   Automatski ce pokupiti podesavanja iz mpd-a, pa ga onda samo pokreni kao sudo mympd. On se nakaci na port 80. Najbolje ga je staviti kao cron task:
-    pokreni:sudo contab -e
-    pa dodati: "@reboot mympd"
+    pokreni:  sudo contab -e
+    pa dodj:  @reboot mympd
 
 - Takodje je upotrebljiv Android klijent MPDroid.
 
@@ -43,6 +53,8 @@ Sledece kreiraj folder:
 
   Da bi se pokrenuo sa sistemom i share-ovao fajlove sa USB flash-a (port 8000) treba na cron dodati:
   @reboot /home/ivana/Apps/mongoose-file-server/mongoose-fs /media/usb0/
+
+  treba ga prvo testirati tako sto se pokrene rucno. Ako ne radi, treba ga ponovo bildovati pokretanjem "build.sh".
 
 - Za LCD display (https://www.aliexpress.com/item/32672327708.html?spm=a2g0s.9042311.0.0.27424c4dOWQ2vb) treba instalirati:
   sudo apt-get install python3-smbus python3-dev i2c-tools
@@ -53,7 +65,8 @@ Sledece kreiraj folder:
   Ako se prati pinout, treba zameniti SDA / SCL. Najverovatnije je greska na pinout-u za RPIZero.
 
   Python biblioteka za displey:
-  sudo apt install python3-libgpiod oled-text
+  sudo apt install python3-libgpiod 
+  sudo pip3 install oled-text
 
   Moze se sada testirati sa: python3 -m oled_text.oled_text
 
@@ -69,4 +82,6 @@ Sledece kreiraj folder:
 - Za vremensku prognozu koristim moj skript: weather.py
   Na pocetku skripta su njegovi detalji, pa ga za vise informacija otvori i pogledaj kod. Dosta je jednostavan.
  
+- Jacina zvuka je dosta niska, pa je potrebno pojacati to u: alsamixer
+  Zato sam napisao skript: set_audio_volume.sh
 
