@@ -20,7 +20,7 @@ Kada se ubode USB FLASH, on se automatski "mountuje" na forlder "/media/usb0". N
 https://linuxconfig.org/how-to-rip-cds-from-the-linux-command-line
 
 - Instalacija "dependency" biblioteka: 
-    sudo apt install mpd mpc python3-pip git abcde mympd python3-smbus python3-dev i2c-tools python3-libgpiod
+    sudo apt install mpd mpc python3-pip git abcde python3-smbus python3-dev i2c-tools python3-libgpiod
     pip3 install flask
     sudo pip3 install flask oled-text OrangePi.GPIO
     sudo pip3 install pillow==2.8.2
