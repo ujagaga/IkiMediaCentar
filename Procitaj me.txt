@@ -49,12 +49,23 @@ Sledece kreiraj folder:
 - Takodje je upotrebljiv Android klijent MPDroid.
 
 - Za file server koristim moj licni server pisan u c-u na bazi mongoose servera: 
-   /home/ivana/Apps/mongoose-file-server/mongoose-fs
+   /home/ivana/Apps/behind-nat-file-storage
 
   Da bi se pokrenuo sa sistemom i share-ovao fajlove sa USB flash-a (port 8000) treba na cron dodati:
-  @reboot /home/ivana/Apps/mongoose-file-server/mongoose-fs /media/usb0/
+  @reboot /home/ivana/Apps/behind-nat-file-storage/bnfs -d /media/usb0/
 
   treba ga prvo testirati tako sto se pokrene rucno. Ako ne radi, treba ga ponovo bildovati pokretanjem "build.sh".
+
+  On koristi "local tunnel" servis koji pravi reverzni proxy, konekciju koja radi kroz natovanu mrezu (iza rutera bez javne IP adrese). Da bi se instalirao, obezbedio sam najnoviji Node-JS koji sam bildovao iz sorce-a:
+
+  wget http://nodejs.org/dist/node-latest.tar.gz
+  tar -xzf node-latest.tar.gz
+  cd node-v....
+  ./configure
+  make
+  make install
+
+  Zatim sam instalirao local tunnel: npm install -g localtunnel
 
 - Za LCD display (https://www.aliexpress.com/item/32672327708.html?spm=a2g0s.9042311.0.0.27424c4dOWQ2vb) treba instalirati:
   sudo apt-get install python3-smbus python3-dev i2c-tools
