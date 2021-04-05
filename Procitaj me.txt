@@ -48,20 +48,15 @@ Sledece kreiraj folder:
 
 - Takodje je upotrebljiv Android klijent MPDroid.
 
-- Za file server koristim moj licni server pisan u c-u na bazi mongoose servera: 
-   /home/ivana/Apps/behind-nat-file-storage
+- Za file server koristim moj licni "Behind NAT File Server" pisan u c-u na bazi mongoose servera: 
+   /opt/bnfs
+  Instalirao sam ga uz pomoc skripta: /home/ivana.Apps/install_bnfs.sh
 
-  Da bi se pokrenuo sa sistemom i share-ovao fajlove sa USB flash-a (port 8000) treba na cron dodati:
-  @reboot cd /home/ivana/Apps/behind-nat-file-storage && ./bnfs -d /media/usb0/
+  Da bi se pokrenuo sa sistemom i share-ovao fajlove sa USB flash-a (port 8000), napravljen je sistemski servis :
+	/etc/systemd/system/bnfs.system
+  Ako zelis da ga disable-ujes/enable-ujes: sudo systemctl [disable/enable/start/stop] bnfs.service 
 
-  Instalira se tako sto pokrenes "update.sh" koji povuce sve najnovije sa git repozitorijuma.
-
-  On koristi "local tunnel" servis koji pravi reverzni proxy, konekciju koja radi kroz natovanu mrezu (iza rutera bez javne IP adrese). Da bi se instalirao, prvo sam instalirao node-js i npm:
-  sudo apt install nodejs npm
-
-  Zatim sam instalirao local tunnel: npm install -g localtunnel
-
-  Default kredencijali su: admin:admin
+  On koristi "local tunnel" servis koji pravi reverzni proxy, konekciju koja radi kroz natovanu mrezu (iza rutera bez javne IP adrese). 
 
 - Za LCD display (https://www.aliexpress.com/item/32672327708.html?spm=a2g0s.9042311.0.0.27424c4dOWQ2vb) treba instalirati:
   sudo apt-get install python3-smbus python3-dev i2c-tools
@@ -91,4 +86,9 @@ Sledece kreiraj folder:
  
 - Jacina zvuka je dosta niska, pa je potrebno pojacati to u: alsamixer
   Zato sam napisao skript: set_audio_volume.sh
+
+- Na kraju celog procesa sam napravio git repozitorijum u root-u, tj "/" folder-u. Komitovao sam sve sto sam smatrao za bitno, pa ako nesto unistis od programa ovde navedenih, samo uradi:
+  sudo git checkout master
+
+  Ako to ne uspe, pogledaj broj poslednjeg komita sa: "sudo git log", pa pokusaj: "sudo git checkout <broj commit-a>".
 
